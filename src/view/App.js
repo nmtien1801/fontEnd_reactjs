@@ -11,6 +11,7 @@ import Nav from "../components/Navigation/nav";
 import Axios from "./Axios";
 import Login from "../components/Login/login";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Register from "../components/register/register";
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
             </Route>
             <Route exact path="/login">
               <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
             </Route>
             <Route path="/about">
               <MyComponent />

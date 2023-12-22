@@ -2,14 +2,15 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
-import logo from "./logo.svg";
 import MyComponent from "./myComponent";
 import Home from "./Home";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Detail from "./Detail";
-import Nav from "./nav";
+import Nav from "../components/Navigation/nav";
 
 import Axios from "./Axios";
+import Login from "../components/Login/login";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -17,11 +18,13 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Nav />
-          <img src={logo} className="App-logo" alt="logo" />
 
           <Switch>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route exact path="/login">
+              <Login />
             </Route>
             <Route path="/about">
               <MyComponent />
@@ -32,6 +35,7 @@ function App() {
             <Route path="/api/:id">
               <Detail />
             </Route>
+            <Route path="*">404 not found</Route>
           </Switch>
         </header>
 

@@ -1,18 +1,61 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./register.scss";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Register = (props) => {
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   let history = useHistory();
   const handleLogin = () => {
     history.push("/login");
   };
   useEffect(() => {
-    axios.get("https://reqres.in/api/users?page=2").then((data) => {
-      console.log("check data: ", data);
-    });
+    // axios.get("http://localhost:8080/api/test-api").then((data) => {
+    //   console.log("check data: ", data);
+    // });
   }, []);
+
+  const isValidInput = () => {
+    if (!email) {
+      toast.error("email is require");
+      return false;
+    }
+    if (!phone) {
+      toast.error("phone is require");
+      return false;
+    }
+    if (!userName) {
+      toast.error("userName is require");
+      return false;
+    }
+    if (!password) {
+      toast.error("password is require");
+      return false;
+    }
+    if (password != confirmPassword) {
+      toast.error("your password is not the same");
+      return false;
+    }
+    let regex = /\S+@\S+\.\S+/;
+    if(!regex.test(email)){
+      toast.error("please enter a valid email address");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleRegister = () => {
+    let check = isValidInput();
+    let userData = { email, phone, userName, password };
+    console.log("check user data : ", userData);
+  };
   return (
     <div className="register-container">
       <div className="container">
@@ -30,6 +73,8 @@ const Register = (props) => {
                 id="Email"
                 type="text"
                 placeholder="Email addrest or phone number"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
 
@@ -38,8 +83,10 @@ const Register = (props) => {
               <input
                 className="form-control "
                 id="SDT"
-                type="text"
+                type="number"
                 placeholder="số điện thoại"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
               />
             </div>
             <div className="form-group">
@@ -49,6 +96,8 @@ const Register = (props) => {
                 id="userName"
                 type="text"
                 placeholder="user Name"
+                value={userName}
+                onChange={(event) => setUserName(event.target.value)}
               />
             </div>
             <div className="form-group">
@@ -56,8 +105,10 @@ const Register = (props) => {
               <input
                 className="form-control "
                 id="password"
-                type="text"
+                type="password"
                 placeholder="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <div className="form-group">
@@ -65,11 +116,18 @@ const Register = (props) => {
               <input
                 className="form-control "
                 id="Re_Password"
-                type="text"
+                type="password"
                 placeholder="Re-Enter Password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
               />
             </div>
-            <button className="btn btn-primary">Register</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleRegister()}
+            >
+              Register
+            </button>
 
             <div className="btn-createAccount">
               <button className="btn btn-success" onClick={() => handleLogin()}>

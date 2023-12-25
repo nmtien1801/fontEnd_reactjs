@@ -10,24 +10,40 @@ const Register = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const defaulValidInput = {
+    isValidEmail: true,
+    isValidPhone: true,
+    isValidPassword: true,
+    isValidConfirmPassword: true,
+  };
+  const [objCheckInput, setObjCheckInput] = useState(defaulValidInput);
 
   let history = useHistory();
   const handleLogin = () => {
     history.push("/login");
   };
   useEffect(() => {
-    // axios.get("http://localhost:8080/api/test-api").then((data) => {
+    // axios.get("http://localhost:8080/api/v1/test-api").then((data) => {
     //   console.log("check data: ", data);
     // });
   }, []);
 
   const isValidInput = () => {
+    setObjCheckInput(defaulValidInput);
     if (!email) {
       toast.error("email is require");
+      setObjCheckInput({ ...defaulValidInput, isValidEmail: false });
+      return false;
+    }
+    let regex = /\S+@\S+\.\S+/;
+    if (!regex.test(email)) {
+      setObjCheckInput({ ...defaulValidInput, isValidEmail: false });
+      toast.error("please enter a valid email address");
       return false;
     }
     if (!phone) {
       toast.error("phone is require");
+      setObjCheckInput({ ...defaulValidInput, isValidPhone: false });
       return false;
     }
     if (!userName) {
@@ -36,15 +52,12 @@ const Register = (props) => {
     }
     if (!password) {
       toast.error("password is require");
+      setObjCheckInput({ ...defaulValidInput, isValidPassword: false });
       return false;
     }
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       toast.error("your password is not the same");
-      return false;
-    }
-    let regex = /\S+@\S+\.\S+/;
-    if(!regex.test(email)){
-      toast.error("please enter a valid email address");
+      setObjCheckInput({ ...defaulValidInput, isValidConfirmPassword: false });
       return false;
     }
 
@@ -53,8 +66,15 @@ const Register = (props) => {
 
   const handleRegister = () => {
     let check = isValidInput();
-    let userData = { email, phone, userName, password };
-    console.log("check user data : ", userData);
+
+    if (check === true) {
+      axios.post("http://localhost:8080/api/v1/register", {
+        email,
+        phone,
+        userName,
+        password,
+      });
+    }
   };
   return (
     <div className="register-container">
@@ -69,7 +89,11 @@ const Register = (props) => {
             <div className="form-group">
               <label for="Email">Email</label>
               <input
-                className="form-control "
+                className={
+                  objCheckInput.isValidEmail
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 id="Email"
                 type="text"
                 placeholder="Email addrest or phone number"
@@ -81,7 +105,11 @@ const Register = (props) => {
             <div className="form-group">
               <label for="SDT">SDT</label>
               <input
-                className="form-control "
+                className={
+                  objCheckInput.isValidPhone
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 id="SDT"
                 type="number"
                 placeholder="số điện thoại"
@@ -103,7 +131,11 @@ const Register = (props) => {
             <div className="form-group">
               <label for="password">Password</label>
               <input
-                className="form-control "
+                className={
+                  objCheckInput.isValidPassword
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 id="password"
                 type="password"
                 placeholder="password"
@@ -114,7 +146,11 @@ const Register = (props) => {
             <div className="form-group">
               <label for="Re_Password">Re-Enter Password</label>
               <input
-                className="form-control "
+                className={
+                  objCheckInput.isValidConfirmPassword
+                    ? "form-control"
+                    : "form-control is-invalid"
+                }
                 id="Re_Password"
                 type="password"
                 placeholder="Re-Enter Password"

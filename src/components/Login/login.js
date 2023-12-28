@@ -29,7 +29,14 @@ const Login = () => {
     let response = await LoginUser(valueLogin, password);
     if (response && response.data && +response.data.EC === 0) {
       toast.success(response.data.EM);
+      //success
+      let data = {
+        isAuthenticated: true,
+        token: "fake token",
+      };
+      sessionStorage.setItem("account", JSON.stringify(data)); // thay cho REDUX: session storage
       history.push("/users");
+      window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage)
     }
     if (response && response.data && +response.data.EC !== 0) {
       toast.error(response.data.EM);
@@ -39,6 +46,13 @@ const Login = () => {
   let history = useHistory();
   const handleCreateNewAccount = () => {
     history.push("/register");
+  };
+
+  // press ENTER: react on keypress
+  const handlePressEnter = (event) => {
+    if (event.key === "Enter" && event.charCode === 13) {
+      handleLogin();
+    }
   };
   return (
     <div className="login-container">
@@ -72,6 +86,9 @@ const Login = () => {
               type="password"
               placeholder="Password"
               value={password}
+              onKeyPress={(event) => {
+                handlePressEnter(event);
+              }}
               onChange={(event) => {
                 setPassword(event.target.value);
               }}

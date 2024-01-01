@@ -22,5 +22,12 @@ const fetchAllUser = (page, limit) => {
     `http://localhost:8080/api/v1/user/read?page=${page}&limit=${limit}`
   );
 };
+
+const deleteUser = (user) => {
+  return axios.delete("http://localhost:8080/api/v1/user/delete", {
+    data: { id: user.id },
+    // headers: { Authorization: "***" },
+  });
+};
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { registerNewUser, LoginUser, fetchAllUser };
+export { registerNewUser, LoginUser, fetchAllUser, deleteUser };

@@ -84,6 +84,13 @@ const Register = (props) => {
     }
   };
 
+  // press ENTER: react on keypress
+  const handlePressEnter = (event) => {
+    if (event.key === "Enter" && event.charCode === 13) {
+      handleRegister();
+    }
+  };
+
   return (
     <div className="register-container">
       <div className="container">
@@ -163,6 +170,9 @@ const Register = (props) => {
                 type="password"
                 placeholder="Re-Enter Password"
                 value={confirmPassword}
+                onKeyPress={(event) => {
+                  handlePressEnter(event);
+                }}
                 onChange={(event) => setConfirmPassword(event.target.value)}
               />
             </div>

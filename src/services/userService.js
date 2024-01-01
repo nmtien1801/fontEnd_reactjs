@@ -15,5 +15,12 @@ const LoginUser = (valueLogin, password) => {
     password,
   });
 };
+
+const fetchAllUser = (page, limit) => {
+  // dùng `` (temlate string) để nối chuỗi nhanh thay +
+  return axios.get(
+    `http://localhost:8080/api/v1/user/read?page=${page}&limit=${limit}`
+  );
+};
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { registerNewUser, LoginUser };
+export { registerNewUser, LoginUser, fetchAllUser };

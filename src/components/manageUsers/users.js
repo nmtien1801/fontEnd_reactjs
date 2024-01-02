@@ -8,9 +8,10 @@ const Users = (props) => {
   const [listUser, setListUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(2);
-  const [totalPage, setTotalPage] = useState(0);
+  const [totalPage, setTotalPage] = useState();
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({});
+  const [isDataInPage, setIsDataInPage] = useState(true);
 
   // nhược điểm của useEffec là luôn đồng bộ
   useEffect(() => {
@@ -22,6 +23,12 @@ const Users = (props) => {
     if (res && res.data && res.data.EC === 0) {
       setTotalPage(res.data.DT.totalPage);
       setListUser(res.data.DT.users);
+      
+      if (res.data.DT.users.length === 1) {
+        setIsDataInPage(false);
+      } else {
+        setIsDataInPage(true);
+      }
     }
   };
 
@@ -44,6 +51,9 @@ const Users = (props) => {
     console.log(">>>check res user delete: ", res);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
+      if (isDataInPage === false) {
+        setCurrentPage(currentPage - 1);
+      }
       await fetchUser();
       setIsShowModalDelete(false);
     } else {

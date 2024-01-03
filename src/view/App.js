@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.scss";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import _ from "lodash";
+import _ from "lodash"; // cung cấp các method của mảng mà (get .) không có
 
 import Nav from "../components/Navigation/nav";
 import AppRoutes from "../routes/appRoutes";

@@ -29,5 +29,10 @@ const deleteUser = (user) => {
     // headers: { Authorization: "***" },
   });
 };
+
+const fetchGroup = () => {
+  return axios.get("http://localhost:8080/api/v1/group/read");
+};
+
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { registerNewUser, LoginUser, fetchAllUser, deleteUser };
+export { registerNewUser, LoginUser, fetchAllUser, deleteUser, fetchGroup };

@@ -3,15 +3,20 @@ import { fetchAllUser, deleteUser } from "../../services/userService";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import ModalDelete from "./modalDelete";
+import ModalUser from "./modalUser";
+import "./users.scss";
 
 const Users = (props) => {
   const [listUser, setListUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentLimit, setCurrentLimit] = useState(2);
   const [totalPage, setTotalPage] = useState();
+  // Modal delete
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({});
   const [isDataInPage, setIsDataInPage] = useState(true);
+  // Modal user
+  const [isShowModalUser, setIsShowModalUser] = useState(false);
 
   // nhược điểm của useEffec là luôn đồng bộ
   useEffect(() => {
@@ -23,7 +28,7 @@ const Users = (props) => {
     if (res && res.data && res.data.EC === 0) {
       setTotalPage(res.data.DT.totalPage);
       setListUser(res.data.DT.users);
-      
+
       if (res.data.DT.users.length === 1) {
         setIsDataInPage(false);
       } else {
@@ -44,6 +49,7 @@ const Users = (props) => {
 
   const handleClose = () => {
     setIsShowModalDelete(false);
+    setIsShowModalUser(false);
   };
 
   const confirmDeleteUser = async () => {
@@ -61,6 +67,10 @@ const Users = (props) => {
     }
   };
 
+  const handleEditUser = (user) => {
+    setDataModal(user);
+    setIsShowModalUser(true);
+  };
   return (
     <>
       <div className="container">
@@ -99,7 +109,12 @@ const Users = (props) => {
                           <td>{item.userName}</td>
                           <td>{item.Group ? item.Group.name : ""}</td>
                           <td>
-                            <button className="btn btn-warning me-3">
+                            <button
+                              className="btn btn-warning me-3"
+                              onClick={() => {
+                                handleEditUser(item);
+                              }}
+                            >
                               Edit
                             </button>
                             <button
@@ -157,6 +172,12 @@ const Users = (props) => {
         handleClose={handleClose}
         confirmDeleteUser={confirmDeleteUser}
         dataModal={dataModal}
+      />
+
+      <ModalUser
+        show={isShowModalUser}
+        title="create new user"
+        handleClose={handleClose}
       />
     </>
   );

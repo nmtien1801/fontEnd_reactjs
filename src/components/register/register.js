@@ -77,7 +77,7 @@ const Register = (props) => {
         history.push("/login");
       } else {
         toast.error(serviceData.EM);
-        if (serviceData.DT === "email") {
+        if (serviceData.DT === "email") { // bôi đỏ lại input bị sai
           setObjCheckInput({ ...defaulValidInput, isValidEmail: false });
         }
       }

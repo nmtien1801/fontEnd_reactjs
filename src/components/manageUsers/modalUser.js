@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchGroup, createNewUser } from "../../services/userService";
 import { toast } from "react-toastify";
 import _ from "lodash"; // react hook not merge state
-
+import "./users.scss"
 const ModalUser = (props) => {
   // const [email, setEmail] = useState("");
   // const [phone, setPhone] = useState("");
@@ -18,10 +18,10 @@ const ModalUser = (props) => {
     email: "",
     phone: "",
     userName: "",
-    password: "",
+    password: "", //passWord
     address: "",
     sex: "",
-    group: "",
+    group: "", //groupID
   };
   const validInputsDefault = {
     email: true,
@@ -113,7 +113,10 @@ const ModalUser = (props) => {
         setUserData({ ...defaultUserData, group: userGroup[0].id });
         props.fetchUser();
       } else {
-        toast.error("Error create user");
+        toast.error(res.data.EM);
+        let _validInput = _.cloneDeep(validInputsDefault);
+        _validInput[res.data.DT] = false;
+        setValidInput(_validInput);
       }
     }
   };

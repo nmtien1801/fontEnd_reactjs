@@ -34,5 +34,18 @@ const fetchGroup = () => {
   return axios.get("http://localhost:8080/api/v1/group/read");
 };
 
+const createNewUser = (userData) => {
+  return axios.post("http://localhost:8080/api/v1/user/create", {
+    ...userData,
+  });
+};
+
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { registerNewUser, LoginUser, fetchAllUser, deleteUser, fetchGroup };
+export {
+  registerNewUser,
+  LoginUser,
+  fetchAllUser,
+  deleteUser,
+  fetchGroup,
+  createNewUser,
+};

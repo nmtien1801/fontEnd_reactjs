@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { fetchGroup } from "../../services/userService";
+import { fetchGroup, createNewUser } from "../../services/userService";
 import { toast } from "react-toastify";
 import _ from "lodash"; // react hook not merge state
 
@@ -43,6 +43,11 @@ const ModalUser = (props) => {
     let res = await fetchGroup();
     if (res && res.data.EC === 0) {
       setUserGroup(res.data.DT);
+      // gán mặc định group là select đầu tiên và kiểu là id cho trùng db
+      if (res.data.DT && res.data.DT.length > 0) {
+        let defaultGroup = res.data.DT;
+        setUserData({ ...defaultUserData, group: defaultGroup[0].id });
+      }
     } else {
       toast.error(res.data.EM);
     }
@@ -59,9 +64,11 @@ const ModalUser = (props) => {
     setValidInput(validInputsDefault);
     let arr = ["email", "phone", "password", "group"];
     let check = true;
-    let regex = /\S+@\S+\.\S+/;
+    let regexEmail = /\S+@\S+\.\S+/;
+    let regexPhone = /0([0-9]{9})/;
+    let regexPassword = /^.{4,}$}/;
     for (let i = 0; i < arr.length; i++) {
-      if (!userData[arr[i]] || (!regex.test(userData[arr[i]]) && !userData[arr[i]])) {
+      if (!userData[arr[i]]) {
         let _validInput = _.cloneDeep(validInputsDefault);
         _validInput[arr[i]] = false;
         setValidInput(_validInput);
@@ -70,12 +77,45 @@ const ModalUser = (props) => {
         check = false;
         break;
       }
+      if (!regexEmail.test(userData["email"])) {
+        let _validInput = _.cloneDeep(validInputsDefault);
+        _validInput["email"] = false;
+        setValidInput(_validInput);
+
+        toast.error(`regexEmail error ${"email"}`);
+        check = false;
+        break;
+      }
+      if (!regexPhone.test(userData["phone"])) {
+        let _validInput = _.cloneDeep(validInputsDefault);
+        _validInput["phone"] = false;
+        setValidInput(_validInput);
+
+        toast.error(`regexPhone error ${"phone"}`);
+        check = false;
+        break;
+      }
     }
     return check;
   };
 
-  const handleConfirmUser = () => {
-    checkValidInput();
+  const handleConfirmUser = async () => {
+    let check = checkValidInput();
+    if (check === true) {
+      let res = await createNewUser({
+        ...userData,
+        passWord: userData["password"], // thay vì đổi group thành groupId ta chèn mới
+        groupID: userData["group"],
+      });
+      if (res.data && res.data.EC === 0) {
+        props.onHideModalUser();
+        // refesh thì group bị lỗi valid(mất giá trị mặc định) nên cần set lại kiểu id trùng với db
+        setUserData({ ...defaultUserData, group: userGroup[0].id });
+        props.fetchUser();
+      } else {
+        toast.error("Error create user");
+      }
+    }
   };
 
   return (
@@ -83,7 +123,7 @@ const ModalUser = (props) => {
       <Modal
         show={props.show}
         size="lg"
-        onHide={props.handleClose}
+        onHide={props.onHideModalUser}
         animation={true}
         className="modal-user"
       >
@@ -210,7 +250,7 @@ const ModalUser = (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.handleClose}>
+          <Button variant="secondary" onClick={props.onHideModalUser}>
             Close
           </Button>
           <Button

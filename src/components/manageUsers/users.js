@@ -14,7 +14,7 @@ const Users = (props) => {
   // Modal delete
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({});
-  const [isDataInPage, setIsDataInPage] = useState(true);
+
   // Modal user
   const [isShowModalUser, setIsShowModalUser] = useState(false);
 
@@ -28,12 +28,6 @@ const Users = (props) => {
     if (res && res.data && res.data.EC === 0) {
       setTotalPage(res.data.DT.totalPage);
       setListUser(res.data.DT.users);
-
-      if (res.data.DT.users.length === 1) {
-        setIsDataInPage(false);
-      } else {
-        setIsDataInPage(true);
-      }
     }
   };
 
@@ -49,7 +43,6 @@ const Users = (props) => {
 
   const handleClose = () => {
     setIsShowModalDelete(false);
-    setIsShowModalUser(false);
   };
 
   const confirmDeleteUser = async () => {
@@ -57,9 +50,6 @@ const Users = (props) => {
     console.log(">>>check res user delete: ", res);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
-      if (isDataInPage === false) {
-        setCurrentPage(currentPage - 1);
-      }
       await fetchUser();
       setIsShowModalDelete(false);
     } else {
@@ -71,6 +61,11 @@ const Users = (props) => {
     setDataModal(user);
     setIsShowModalUser(true);
   };
+
+  const onHideModalUser = () => {
+    setIsShowModalUser(false);
+  };
+
   return (
     <>
       <div className="container">
@@ -81,7 +76,14 @@ const Users = (props) => {
             </div>
             <div className="actions">
               <button className="btn btn-success">refesh</button>
-              <button className="btn btn-primary">add new user</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setIsShowModalUser(true);
+                }}
+              >
+                add new user
+              </button>
             </div>
           </div>
 
@@ -177,7 +179,8 @@ const Users = (props) => {
       <ModalUser
         show={isShowModalUser}
         title="create new user"
-        handleClose={handleClose}
+        onHideModalUser={onHideModalUser}
+        fetchUser={fetchUser}
       />
     </>
   );

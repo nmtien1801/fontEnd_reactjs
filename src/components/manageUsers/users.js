@@ -14,7 +14,7 @@ const Users = (props) => {
   // Modal delete
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({});
-
+  const [isDataInPage, setIsDataInPage] = useState(true);
   // Modal user
   const [isShowModalUser, setIsShowModalUser] = useState(false);
 
@@ -28,6 +28,11 @@ const Users = (props) => {
     if (res && res.data && res.data.EC === 0) {
       setTotalPage(res.data.DT.totalPage);
       setListUser(res.data.DT.users);
+      if (res.data.DT.users.length === 1) {
+        setIsDataInPage(false);
+      } else {
+        setIsDataInPage(true);
+      }
     }
   };
 
@@ -50,6 +55,9 @@ const Users = (props) => {
     console.log(">>>check res user delete: ", res);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
+      if (isDataInPage === false) {
+        setCurrentPage(currentPage - 1);
+      }
       await fetchUser();
       setIsShowModalDelete(false);
     } else {

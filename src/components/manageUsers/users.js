@@ -15,8 +15,10 @@ const Users = (props) => {
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({});
   const [isDataInPage, setIsDataInPage] = useState(true);
-  // Modal user
+  // Modal user update/create
   const [isShowModalUser, setIsShowModalUser] = useState(false);
+  const [actionModalUser, setActionModalUser] = useState("");
+  const [dataModalUser, setDataModalUser] = useState({});
 
   // nhược điểm của useEffec là luôn đồng bộ
   useEffect(() => {
@@ -28,6 +30,7 @@ const Users = (props) => {
     if (res && res.data && res.data.EC === 0) {
       setTotalPage(res.data.DT.totalPage);
       setListUser(res.data.DT.users);
+      // reset trang khi delete
       if (res.data.DT.users.length === 1) {
         setIsDataInPage(false);
       } else {
@@ -66,12 +69,15 @@ const Users = (props) => {
   };
 
   const handleEditUser = (user) => {
-    setDataModal(user);
+    setActionModalUser("UPDATE");
+    setDataModalUser(user);
     setIsShowModalUser(true);
   };
 
-  const onHideModalUser = () => {
+  const onHideModalUser = async() => {
     setIsShowModalUser(false);
+    setDataModalUser({});
+    await fetchUser()
   };
 
   return (
@@ -87,6 +93,7 @@ const Users = (props) => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
+                  setActionModalUser("CREATE");
                   setIsShowModalUser(true);
                 }}
               >
@@ -113,7 +120,9 @@ const Users = (props) => {
                     {listUser.map((item, index) => {
                       return (
                         <tr key={`row-${index}`}>
-                          <td>{(currentPage - 1) * currentLimit + index + 1}</td>
+                          <td>
+                            {(currentPage - 1) * currentLimit + index + 1}
+                          </td>
                           <td>{item.id}</td>
                           <td>{item.email}</td>
                           <td>{item.userName}</td>
@@ -186,9 +195,9 @@ const Users = (props) => {
 
       <ModalUser
         show={isShowModalUser}
-        title="create new user"
         onHideModalUser={onHideModalUser}
-        fetchUser={fetchUser}
+        action={actionModalUser}
+        dataModal={dataModalUser}
       />
     </>
   );

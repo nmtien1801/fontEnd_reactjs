@@ -40,6 +40,11 @@ const createNewUser = (userData) => {
   });
 };
 
+const updateCurrentUser = (userData) => {
+  return axios.put("http://localhost:8080/api/v1/user/update", {
+    ...userData,
+  });
+};
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
 export {
   registerNewUser,
@@ -48,4 +53,5 @@ export {
   deleteUser,
   fetchGroup,
   createNewUser,
+  updateCurrentUser,
 };

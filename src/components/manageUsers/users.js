@@ -74,10 +74,14 @@ const Users = (props) => {
     setIsShowModalUser(true);
   };
 
-  const onHideModalUser = async() => {
+  const onHideModalUser = async () => {
     setIsShowModalUser(false);
     setDataModalUser({});
-    await fetchUser()
+    await fetchUser();
+  };
+
+  const handleRefresh = async () => {
+    await fetchUser();
   };
 
   return (
@@ -85,11 +89,18 @@ const Users = (props) => {
       <div className="container">
         <div className="manage-user-container">
           <div className="user-header">
-            <div className="title">
-              <h3>user header</h3>
+            <div className="title mt-3">
+              <h3>Manage Users</h3>
             </div>
-            <div className="actions">
-              <button className="btn btn-success">refesh</button>
+            <div className="actions my-3">
+              <button
+                className="btn btn-success"
+                onClick={() => {
+                  handleRefresh();
+                }}
+              >
+                <i className="fa fa-refresh refresh"></i>refresh
+              </button>
               <button
                 className="btn btn-primary"
                 onClick={() => {
@@ -97,6 +108,7 @@ const Users = (props) => {
                   setIsShowModalUser(true);
                 }}
               >
+                <i className="fa fa-plus-circle"></i>
                 add new user
               </button>
             </div>
@@ -128,22 +140,24 @@ const Users = (props) => {
                           <td>{item.userName}</td>
                           <td>{item.Group ? item.Group.name : ""}</td>
                           <td>
-                            <button
-                              className="btn btn-warning me-3"
+                            <span
+                              title="Edit"
+                              className="edit me-3"
                               onClick={() => {
                                 handleEditUser(item);
                               }}
                             >
-                              Edit
-                            </button>
-                            <button
-                              className="btn btn-danger"
+                              <i className="fa fa-pencil"></i>
+                            </span>
+                            <span
+                              title="Delete"
+                              className="delete"
                               onClick={() => {
                                 handleDeleteUser(item);
                               }}
                             >
-                              Delete
-                            </button>
+                              <i className="fa fa-trash-o"></i>
+                            </span>
                           </td>
                         </tr>
                       );

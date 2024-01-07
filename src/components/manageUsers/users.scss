@@ -14,7 +14,29 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+
+//
+.manage-user-container {
+  i {
+    padding-right: 7px;
+  }
+
+  .action {
+    .refresh {
+      margin-right: 10px;
+    }
+  }
+  .user-body {
+    .edit {
+      color: orange;
+      cursor: pointer;
+    }
+    .delete {
+      color: red;
+      cursor: pointer;
+    }
+  }
 }

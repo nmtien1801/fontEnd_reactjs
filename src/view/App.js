@@ -5,6 +5,7 @@ import "./App.scss";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import _ from "lodash"; // cung cấp các method của mảng mà (get .) không có
+import 'font-awesome/css/font-awesome.min.css';
 
 import Nav from "../components/Navigation/nav";
 import AppRoutes from "../routes/appRoutes";

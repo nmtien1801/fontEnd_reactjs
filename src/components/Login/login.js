@@ -33,9 +33,9 @@ const Login = () => {
       setObjvalidInput({ ...defaultObjValidInput, isValidPassword: false });
       return;
     }
-    let response = await LoginUser(valueLogin, password);
-    if (response && response.data && +response.data.EC === 0) {
-      toast.success(response.data.EM);
+    let res = await LoginUser(valueLogin, password);
+    if (res &&  +res.EC === 0) {
+      toast.success(res.EM);
       //success
       let data = {
         isAuthenticated: true,
@@ -45,8 +45,8 @@ const Login = () => {
       history.push("/users");
       window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage)
     }
-    if (response && response.data && +response.data.EC !== 0) {
-      toast.error(response.data.EM);
+    if (res && +res.EC !== 0) {
+      toast.error(res.EM);
     }
   };
 

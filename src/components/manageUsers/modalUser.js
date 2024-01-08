@@ -64,15 +64,15 @@ const ModalUser = (props) => {
 
   const getGroup = async () => {
     let res = await fetchGroup();
-    if (res && res.data.EC === 0) {
-      setUserGroup(res.data.DT);
+    if (res && res.EC === 0) {
+      setUserGroup(res.DT);
       // gán mặc định group là select đầu tiên và kiểu là id cho trùng db
-      if (res.data.DT && res.data.DT.length > 0) {
-        let defaultGroup = res.data.DT;
+      if (res.DT && res.DT.length > 0) {
+        let defaultGroup = res.DT;
         setUserData({ ...defaultUserData, group: defaultGroup[0].id });
       }
     } else {
-      toast.error(res.data.EM);
+      toast.error(res.EM);
     }
   };
 
@@ -138,7 +138,7 @@ const ModalUser = (props) => {
               ...userData,
               groupID: userData["group"],
             });
-      if (res.data && res.data.EC === 0) {
+      if (res && res.EC === 0) {
         props.onHideModalUser();
         // refesh thì group bị lỗi valid(mất giá trị mặc định) nên cần set lại kiểu id trùng với db
         setUserData({
@@ -146,9 +146,9 @@ const ModalUser = (props) => {
           group: userGroup && userGroup.length > 0 ? userGroup[0].id : "",
         });
       } else {
-        toast.error(res.data.EM);
+        toast.error(res.EM);
         let _validInput = _.cloneDeep(validInputsDefault);
-        _validInput[res.data.DT] = false;
+        _validInput[res.DT] = false;
         setValidInput(_validInput);
       }
     }

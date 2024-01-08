@@ -69,8 +69,8 @@ const Register = (props) => {
     let check = isValidInput();
 
     if (check === true) {
-      let response = await registerNewUser(email, phone, userName, password);
-      let serviceData = response.data;
+      let res = await registerNewUser(email, phone, userName, password);
+      let serviceData = res;
       // +: convert number -> String
       if (+serviceData.EC === 0) {
         toast.success(serviceData.EM);

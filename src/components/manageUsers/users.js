@@ -27,11 +27,11 @@ const Users = (props) => {
 
   const fetchUser = async () => {
     let res = await fetchAllUser(currentPage, currentLimit);
-    if (res && res.data && res.data.EC === 0) {
-      setTotalPage(res.data.DT.totalPage);
-      setListUser(res.data.DT.users);
+    if (res &&  res.EC === 0) {
+      setTotalPage(res.DT.totalPage);
+      setListUser(res.DT.users);
       // reset trang khi delete
-      if (res.data.DT.users.length === 1) {
+      if (res.DT.users.length === 1) {
         setIsDataInPage(false);
       } else {
         setIsDataInPage(true);
@@ -56,15 +56,15 @@ const Users = (props) => {
   const confirmDeleteUser = async () => {
     let res = await deleteUser(dataModal);
     console.log(">>>check res user delete: ", res);
-    if (res && res.data.EC === 0) {
-      toast.success(res.data.EM);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
       if (isDataInPage === false) {
         setCurrentPage(currentPage - 1);
       }
       await fetchUser();
       setIsShowModalDelete(false);
     } else {
-      toast.error(res.data.EM);
+      toast.error(res.EM);
     }
   };
 

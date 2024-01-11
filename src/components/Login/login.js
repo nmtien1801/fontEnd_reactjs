@@ -43,7 +43,7 @@ const Login = () => {
       };
       sessionStorage.setItem("account", JSON.stringify(data)); // thay cho REDUX: session storage
       history.push("/users");
-      window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage)
+      window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage) -> vì vậy nên không hiện res.data
     }
     if (res && +res.EC !== 0) {
       toast.error(res.EM);

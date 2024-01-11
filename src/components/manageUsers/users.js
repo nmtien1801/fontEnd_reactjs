@@ -23,11 +23,21 @@ const Users = (props) => {
   // nhược điểm của useEffec là luôn đồng bộ
   useEffect(() => {
     fetchUser();
+    // in ra cookies nhận được từ BE
+    let c = document.cookie
+      .split(";")
+      .reduce(
+        (ac, cv, i) =>
+          Object.assign(ac, { [cv.split("=")[0]]: cv.split("=")[1] }),
+        {}
+      );
+
+    console.log(c);
   }, [currentPage]);
 
   const fetchUser = async () => {
     let res = await fetchAllUser(currentPage, currentLimit);
-    if (res &&  res.EC === 0) {
+    if (res && res.EC === 0) {
       setTotalPage(res.DT.totalPage);
       setListUser(res.DT.users);
       // reset trang khi delete

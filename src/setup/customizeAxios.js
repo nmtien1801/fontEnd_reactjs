@@ -4,6 +4,7 @@ import axios from "axios";
 // Set config defaults when creating the instance
 const instance = axios.create({
   baseURL: "http://localhost:8080",
+  withCredentials: true, // để FE có thể nhận cookie từ BE
 });
 
 // // Alter defaults after instance has been created

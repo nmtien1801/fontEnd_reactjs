@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getUserAccount } from "../services/userService";
 
-const UserContext = React.createContext({ name: "", auth: false });
+const UserContext = React.createContext(null);
 
 const UserProvider = ({ children }) => {
   // User is the name of the "data" that gets stored in context
@@ -22,6 +23,28 @@ const UserProvider = ({ children }) => {
       auth: false,
     }));
   };
+
+  // lấy api từ BE
+  const fetchUser = async () => {
+    let res = await getUserAccount();
+    if (res && res.EC == 0) {
+      let access_token = res.DT.token;
+      let groupWithRole = res.DT.groupWithRole;
+      let email = res.DT.email;
+      let userName = res.DT.userName;
+
+      let data = {
+        token: access_token,
+        isAuthenticated: true, // khi reset sẽ không văng ra login kh đã login
+        account: { groupWithRole, email, userName },
+      };
+      setUser(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, loginContext, logout }}>

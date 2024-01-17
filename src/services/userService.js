@@ -44,6 +44,10 @@ const updateCurrentUser = (userData) => {
     ...userData,
   });
 };
+
+const getUserAccount = () => {
+  return customizeAxios.get("/api/v1/account");
+};
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
 export {
   registerNewUser,
@@ -53,4 +57,5 @@ export {
   fetchGroup,
   createNewUser,
   updateCurrentUser,
+  getUserAccount,
 };

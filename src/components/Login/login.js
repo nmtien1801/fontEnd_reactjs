@@ -7,13 +7,6 @@ import { UserContext } from "../../context/userContext";
 const Login = () => {
   const { loginContext } = useContext(UserContext);
 
-  useEffect(() => {
-    let session = sessionStorage.getItem("account");
-    if (session) {
-      history.push("/");
-    }
-  }, []);
-
   const [valueLogin, setValueLogin] = useState("");
   const [password, setPassword] = useState("");
   const defaultObjValidInput = {
@@ -49,7 +42,7 @@ const Login = () => {
         token: token,
         account: { groupWithRole, email, userName },
       };
-      sessionStorage.setItem("account", JSON.stringify(data)); // thay cho REDUX: session storage
+
       loginContext(data);
 
       history.push("/users");

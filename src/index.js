@@ -7,6 +7,7 @@ import App from "./view/App";
 import { Provider } from "react-redux";
 import { legacy_createStore as createStore } from "redux";
 import rootReducer from "./store/reducer/RootReducer";
+import {UserProvider} from "./context/userContext"
 ///////react v18
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(
@@ -23,9 +24,15 @@ const reduxStore = createStore(
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={reduxStore}>
+    {/* redux */}
+    {/* <Provider store={reduxStore}>
       <App />
-    </Provider>
+    </Provider> */}
+    
+    {/* context */}
+    <UserProvider>
+      <App />
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

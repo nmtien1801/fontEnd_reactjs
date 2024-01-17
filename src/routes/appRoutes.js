@@ -14,9 +14,12 @@ const AppRoutes = (props) => {
   return (
     <>
       <Switch>
-        <Route exact path="/">
-          <Home />
+        <Route exact path="/">  
+        {/* this is  use redux */}
+          {/* <Home /> */}
+          Home
         </Route>
+
         {/* <Route path="/about">
           <MyComponent />
         </Route> */}

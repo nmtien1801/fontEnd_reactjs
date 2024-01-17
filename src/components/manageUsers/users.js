@@ -32,7 +32,7 @@ const Users = (props) => {
         {}
       );
 
-    console.log(c);
+    console.log(">>>>check cookies: ",c);
   }, [currentPage]);
 
   const fetchUser = async () => {

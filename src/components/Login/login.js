@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./login.scss";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LoginUser } from "../../services/userService";
-
+import { UserContext } from "../../context/userContext";
 const Login = () => {
+  const { loginContext } = useContext(UserContext);
+
   useEffect(() => {
     let session = sessionStorage.getItem("account");
     if (session) {
@@ -34,16 +36,24 @@ const Login = () => {
       return;
     }
     let res = await LoginUser(valueLogin, password);
-    if (res &&  +res.EC === 0) {
+    if (res && +res.EC === 0) {
       toast.success(res.EM);
       //success
+      let email = res.DT.email;
+      let groupWithRole = res.DT.groupWithRole;
+      let userName = res.DT.userName;
+      let token = res.DT.access_token;
+
       let data = {
         isAuthenticated: true,
-        token: "fake token",
+        token: token,
+        account: { groupWithRole, email, userName },
       };
       sessionStorage.setItem("account", JSON.stringify(data)); // thay cho REDUX: session storage
+      loginContext(data);
+
       history.push("/users");
-      window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage) -> vì vậy nên không hiện res.data
+      // window.location.reload(); // fix lỗi thẻ NAV không hiện(session storage) -> vì vậy nên không hiện res.data
     }
     if (res && +res.EC !== 0) {
       toast.error(res.EM);

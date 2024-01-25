@@ -6,7 +6,7 @@ import { UserContext } from "../../context/userContext";
 const Nav = () => {
   // ẩn, hiện(home*) NAV khi login và thoát
   const { user } = useContext(UserContext);
-  const location = useLocation();
+  const location = useLocation(); // userLocation chỉ lấy được trong routes
   if (user && user.isAuthenticated == true || location.pathname === "/") {
     return (
       <>

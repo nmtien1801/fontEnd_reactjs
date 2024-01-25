@@ -37,9 +37,10 @@ instance.interceptors.response.use(
     switch (status) {
       // authentication (token related issues)
       case 401: {
+        console.log(">>>check error 401: ", error.response.data); // SEARCH: axios get error body
         toast.error("Unauthorized the user. please login ... ");
         // window.location.href("/login");
-        return Promise.reject(error);
+        return error.response.data; //getUserAccount res data(BE) nhưng bị chặn bên res(FE) dù đúng hay sai khi fetch account
       }
 
       // forbidden (permission related issues)

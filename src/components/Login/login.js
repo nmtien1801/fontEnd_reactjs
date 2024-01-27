@@ -43,6 +43,7 @@ const Login = () => {
         account: { groupWithRole, email, userName },
       };
 
+      localStorage.setItem("JWT", token); // cookies đã là string nên không dùng json.stringfy nữa
       loginContext(data);
 
       history.push("/users");

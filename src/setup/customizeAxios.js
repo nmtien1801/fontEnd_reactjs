@@ -9,7 +9,8 @@ const instance = axios.create({
 });
 
 // // Alter defaults after instance has been created
-// instance.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+//Search: what is brearer token
+instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("JWT")}`; 
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -23,6 +24,7 @@ instance.interceptors.request.use(
   }
 );
 
+// Search: How can you use axios interceptors?
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {

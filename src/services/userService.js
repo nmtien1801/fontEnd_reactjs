@@ -17,6 +17,10 @@ const LoginUser = (valueLogin, password) => {
   });
 };
 
+const logoutUser = () => {
+  return customizeAxios.post("/api/v1/logout");
+};
+
 const fetchAllUser = (page, limit) => {
   // dùng `` (temlate string) để nối chuỗi nhanh thay +
   return customizeAxios.get(`/api/v1/user/read?page=${page}&limit=${limit}`);
@@ -58,4 +62,5 @@ export {
   createNewUser,
   updateCurrentUser,
   getUserAccount,
+  logoutUser,
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom"; // Link không dùng active
+import { Link, NavLink, useLocation, useHistory } from "react-router-dom"; // Link không dùng active
 import "./nav.scss";
 import { UserContext } from "../../context/userContext";
 import Container from "react-bootstrap/Container";
@@ -7,11 +7,29 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../../logo.svg";
+import { logoutUser } from "../../services/userService";
+import { toast } from "react-toastify";
 
 const NavHeader = () => {
   // ẩn, hiện(home*) NAV khi login và thoát
-  const { user } = useContext(UserContext);
+  const { user, logoutContext } = useContext(UserContext);
   const location = useLocation(); // userLocation chỉ lấy được trong routes
+  const history = useHistory();
+
+  // khi logout thì context vẫn giữ user nên vẫn hiện header
+  const handleLogout = async () => {
+    localStorage.removeItem("JWT"); // clear local storage
+    let data = await logoutUser(); // clear cookies
+    logoutContext(); // clear user in context
+
+    if (data && +data.EC === 0) {
+      toast.success("logout success...");
+      history.push("/login");
+    } else {
+      toast.error(data.EM);
+    }
+  };
+
   if ((user && user.isAuthenticated === true) || location.pathname === "/") {
     return (
       <>
@@ -67,12 +85,12 @@ const NavHeader = () => {
                       </Nav.Item>
 
                       <NavDropdown title="Settings" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">
+                        <NavDropdown.Item href="">
                           Change password
                         </NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.2">
-                          logOut
+                        <NavDropdown.Item href="">
+                          <span onClick={() => handleLogout()}>logOut</span>
                         </NavDropdown.Item>
                       </NavDropdown>
                     </>

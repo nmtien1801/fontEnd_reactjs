@@ -7,7 +7,7 @@ const UserProvider = ({ children }) => {
   // User is the name of the "data" that gets stored in context
   const userDefault = {
     token: "",
-    isLoading: true,
+    isLoading: true, // mặc định vào là fetch user - và sẽ quay vì chưa login - 401
     isAuthenticated: false,
     account: {},
   };
@@ -19,11 +19,8 @@ const UserProvider = ({ children }) => {
   };
 
   // Logout updates the user data to default
-  const logout = () => {
-    setUser((user) => ({
-      name: "",
-      auth: false,
-    }));
+  const logoutContext = () => {
+    setUser({ ...userDefault, isLoading: false });
   };
 
   // lấy api từ BE
@@ -50,15 +47,17 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (
-      window.location.pathname !== "/" ||
+      window.location.pathname !== "/" &&
       window.location.pathname !== "/login"
     ) {
       fetchUser();
+    } else {
+      setUser({ ...user, isLoading: false }); // copy userDefault sẽ bị mất người dùng
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loginContext, logout }}>
+    <UserContext.Provider value={{ user, loginContext, logoutContext }}>
       {children}
     </UserContext.Provider>
   );

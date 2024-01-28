@@ -8,7 +8,7 @@ import _ from "lodash"; // cung cấp các method của mảng mà (get .) khôn
 import "font-awesome/css/font-awesome.min.css";
 import { MutatingDots } from "react-loader-spinner";
 
-import Nav from "../components/Navigation/nav";
+import NavHeader from "../components/Navigation/nav";
 import AppRoutes from "../routes/appRoutes";
 import { UserContext } from "../context/userContext";
 
@@ -37,8 +37,8 @@ function App() {
         ) : (
           <>
             <header className="App-header">
-              {/* {account && !_.isEmpty(account) && account.isAuthenticated && <Nav />} */}
-              <Nav />
+              {/* {account && !_.isEmpty(account) && account.isAuthenticated && <NavHeader />} */}
+              <NavHeader />
             </header>
             <div className="App">
               <AppRoutes />

@@ -22,3 +22,49 @@ body {
     color: white;
   }
 }
+
+.nav-header {
+  .bg-header {
+    background-color: #212529;
+  }
+  a,
+  .nav-link {
+    color: white !important; // important để đè lên boostrap(z-index)
+    &:hover {
+      color: #61dafb !important;
+    }
+  }
+
+  .active {
+    // active dùng đề in đậm phần tử đã chọn
+    color: #61dafb !important;
+  }
+  .dropdown-menu {
+    a {
+      color: #212529 !important;
+      &:hover {
+        color: #61dafb !important;
+      }
+    }
+  }
+
+  .brand-name {
+    color: #61dafb !important;
+    margin-left: 5px;
+  }
+
+  .navbar-brand {
+    // quay logo
+    img {
+      animation: App-logo-spin 15s linear infinite;
+    }
+    @keyframes App-logo-spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

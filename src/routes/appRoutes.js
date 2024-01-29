@@ -9,6 +9,7 @@ import Users from "../components/manageUsers/users";
 import Axios from "../view/Axios";
 import PrivateRoutes from "./privateRoutes";
 import Project from '../view/project'
+import Role from "../components/role/role";
 
 const AppRoutes = (props) => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes = (props) => {
         </Route> */}
         <PrivateRoutes path="/about" component={MyComponent } />
         <PrivateRoutes path="/project" component={Project } />
+        <PrivateRoutes path="/roles" component={Role } />
 
         <Route exact path="/api">
           <Axios />

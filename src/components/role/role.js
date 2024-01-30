@@ -2,31 +2,31 @@ import "./role.scss";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import { createNewRole } from "../../services/roleService";
 
 const Role = (props) => {
+  const dataChildDefault = {
+    url: "",
+    description: "",
+    isValidUrl: true,
+  };
   const [listChild, setListChild] = useState({
-    child1: { url: "a", description: "ds" },
+    child1: dataChildDefault,
   });
-
-  useEffect(() => {
-    Object.entries(listChild).map(
-      ([key, value]) => {
-        console.log(">>>>check list child: ", key, value); // search: js loop through object react
-      }
-
-      // <div key={key}>{value}</div>
-    );
-  }, []);
 
   const handleOneChangeInput = (nameVal, key, value) => {
     let _listChilds = _.cloneDeep(listChild);
     _listChilds[key][nameVal] = value;
+    if (value && nameVal === "url") {
+      _listChilds[key]["isValidUrl"] = true;
+    }
     setListChild(_listChilds);
   };
 
   const handleAddNewInput = () => {
     let _listChilds = _.cloneDeep(listChild);
-    _listChilds[`child-${uuidv4()}`] = { url: "", description: "" };
+    _listChilds[`child-${uuidv4()}`] = dataChildDefault;
     setListChild(_listChilds);
   };
 
@@ -34,6 +34,48 @@ const Role = (props) => {
     let _listChilds = _.cloneDeep(listChild);
     delete _listChilds[key]; // search: object delete key
     setListChild(_listChilds);
+  };
+
+  // persist: write data xuống DB
+  // setup lại data không chứa isvalid trong obj
+  const buildDataToPersist = () => {
+    let _listChilds = _.cloneDeep(listChild);
+    let result = [];
+    // search: js loop through object react
+    Object.entries(listChild).map(([key, value], index) => {
+      result.push({
+        url: value.url,
+        description: value.description,
+      });
+    });
+    return result;
+  };
+
+  //search: sequelize bulk create
+  const handleSave = async () => {
+    let check = true;
+    // search: js object entries break
+    let inValidObj = Object.entries(listChild).find(([key, value], index) => {
+      return value && !value.url; // value => !value.url
+    });
+    console.log(">>>check valid role: ", inValidObj);
+    if (!inValidObj) {
+      // call api
+      let roleData = buildDataToPersist();
+      let res = await createNewRole(roleData);
+      if (res && res.EC === 0) {
+        toast.success(res.EM);
+      } else {
+        toast.error(res.EM);
+      }
+    } else {
+      // error
+      toast.error("input Url must not be empty");
+      let _listChilds = _.cloneDeep(listChild);
+      const keyCol = inValidObj[0];
+      _listChilds[keyCol]["isValidUrl"] = false;
+      setListChild(_listChilds);
+    }
   };
 
   return (
@@ -52,7 +94,11 @@ const Role = (props) => {
                     <label>URL: </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={
+                        value.isValidUrl
+                          ? "form-control"
+                          : "form-control is-invalid"
+                      }
                       value={value.url}
                       onChange={(event) => {
                         handleOneChangeInput("url", key, event.target.value);
@@ -93,9 +139,15 @@ const Role = (props) => {
                 </div>
               );
             })}
-
             <div>
-              <button className="btn btn-warning mt-3">Save</button>
+              <button
+                className="btn btn-warning mt-3"
+                onClick={() => {
+                  handleSave();
+                }}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

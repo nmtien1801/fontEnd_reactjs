@@ -27,8 +27,9 @@ const UserProvider = ({ children }) => {
   const fetchUser = async () => {
     // dùng Promise.reject(error) khi chưa login sẽ không chạy vào res được
     let res = await getUserAccount();
+    // context lấy data từ middleware(req.user BE)
     if (res && res.EC === 0) {
-      let access_token = res.DT.token;
+      let access_token = res.DT.access_token;
       let groupWithRole = res.DT.groupWithRole;
       let email = res.DT.email;
       let userName = res.DT.userName;

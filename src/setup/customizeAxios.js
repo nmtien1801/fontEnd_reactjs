@@ -10,7 +10,9 @@ const instance = axios.create({
 
 // // Alter defaults after instance has been created
 //Search: what is brearer token
-instance.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("JWT")}`; 
+instance.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${localStorage.getItem("JWT")}`;
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -42,7 +44,7 @@ instance.interceptors.response.use(
         console.log(">>>check error 401: ", error.response.data); // SEARCH: axios get error body
         toast.error("Unauthorized the user. please login ... ");
         // window.location.href("/login");
-        return error.response.data; //getUserAccount res data(BE) nhưng bị chặn bên res(FE) dù đúng hay sai khi fetch account
+        return error.response.data; //getUserAccount response data(BE) nhưng bị chặn bên res(FE) dù đúng hay sai khi fetch account
       }
 
       // forbidden (permission related issues)

@@ -1,11 +1,13 @@
 import "./role.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { createNewRole } from "../../services/roleService";
+import TableRole from "./tableRole";
 
 const Role = (props) => {
+  const childRef = useRef();
   const dataChildDefault = {
     url: "",
     description: "",
@@ -58,13 +60,14 @@ const Role = (props) => {
     let inValidObj = Object.entries(listChild).find(([key, value], index) => {
       return value && !value.url; // value => !value.url
     });
-    console.log(">>>check valid role: ", inValidObj);
+    // console.log(">>>check valid role: ", inValidObj);
     if (!inValidObj) {
       // call api
       let roleData = buildDataToPersist();
       let res = await createNewRole(roleData);
       if (res && res.EC === 0) {
         toast.success(res.EM);
+        childRef.current.fetchListRoleAgain();
       } else {
         toast.error(res.EM);
       }
@@ -81,7 +84,7 @@ const Role = (props) => {
   return (
     <div className="role-container">
       <div className="container">
-        <div className="row mt-3">
+        <div className="adding-role row mt-3">
           <div className="title-role">
             <h4>Add a new role...</h4>
           </div>
@@ -150,6 +153,11 @@ const Role = (props) => {
               </button>
             </div>
           </div>
+        </div>
+        <hr />
+        <div className="mt-3 table-role">
+          <h4>List Current Roles</h4>
+          <TableRole ref={childRef} />
         </div>
       </div>
     </div>

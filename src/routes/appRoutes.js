@@ -8,15 +8,16 @@ import Register from "../components/register/register";
 import Users from "../components/manageUsers/users";
 import Axios from "../view/Axios";
 import PrivateRoutes from "./privateRoutes";
-import Project from '../view/project'
+import Project from "../view/project";
 import Role from "../components/role/role";
+import GroupRole from "../components/GroupRoles/groupRole";
 
 const AppRoutes = (props) => {
   return (
     <>
       <Switch>
-        <Route exact path="/">  
-        {/* this is  use redux */}
+        <Route exact path="/">
+          {/* this is  use redux */}
           {/* <Home /> */}
           Home
         </Route>
@@ -24,10 +25,10 @@ const AppRoutes = (props) => {
         {/* <Route path="/about">
           <MyComponent />
         </Route> */}
-        <PrivateRoutes path="/about" component={MyComponent } />
-        <PrivateRoutes path="/project" component={Project } />
-        <PrivateRoutes path="/roles" component={Role } />
-
+        <PrivateRoutes path="/about" component={MyComponent} />
+        <PrivateRoutes path="/project" component={Project} />
+        <PrivateRoutes path="/roles" component={Role} />
+        <PrivateRoutes path="/group-roles" component={GroupRole} />
         <Route exact path="/api">
           <Axios />
         </Route>
@@ -42,7 +43,7 @@ const AppRoutes = (props) => {
           <Register />
         </Route>
 
-        <PrivateRoutes path="/users" component={Users } />
+        <PrivateRoutes path="/users" component={Users} />
         <Route path="*">404 not found</Route>
       </Switch>
     </>

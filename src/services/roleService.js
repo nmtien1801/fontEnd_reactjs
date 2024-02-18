@@ -15,5 +15,9 @@ const deleteRole = (role) => {
   });
 };
 
+const fetchRoleByGroup = (groupId) => {
+  return customizeAxios.get(`/api/v1/role/by-group/${groupId}`);
+};
+
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { createNewRole, fetchAllRoles, deleteRole };
+export { createNewRole, fetchAllRoles, deleteRole, fetchRoleByGroup };

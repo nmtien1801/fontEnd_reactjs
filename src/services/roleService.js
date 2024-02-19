@@ -19,5 +19,15 @@ const fetchRoleByGroup = (groupId) => {
   return customizeAxios.get(`/api/v1/role/by-group/${groupId}`);
 };
 
+const assignRoleToGroup = (data) => {
+  return customizeAxios.post("/api/v1/role/assign-to-group", { data });
+};
+
 // vì react không dùng module như nodejs được nên dùng {} và khi import cũng {}
-export { createNewRole, fetchAllRoles, deleteRole, fetchRoleByGroup };
+export {
+  createNewRole,
+  fetchAllRoles,
+  deleteRole,
+  fetchRoleByGroup,
+  assignRoleToGroup,
+};

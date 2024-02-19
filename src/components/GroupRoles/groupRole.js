@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import "./groupRole.scss";
 import { fetchGroup } from "../../services/userService";
 import { toast } from "react-toastify";
-import { fetchAllRoles, fetchRoleByGroup } from "../../services/roleService";
+import {
+  fetchAllRoles,
+  fetchRoleByGroup,
+  assignRoleToGroup,
+} from "../../services/roleService";
 import _ from "lodash"; // CRUD in arr
 
 const GroupRole = () => {
@@ -90,6 +94,34 @@ const GroupRole = () => {
     setAssignRolesByGroup(_assignRolesByGroup);
   };
 
+  // delete - create role click
+  const buildDataToSave = () => {
+    let rs = {};
+    const _assignRolesByGroup = _.cloneDeep(assignRolesByGroup);
+    // tìm những option được click
+    let groupRolesFilter = _assignRolesByGroup.filter(
+      (item) => item.isAssigned === true
+    );
+    // chuyển data tới BE có dạng groupId, roleId (/assign-to-group)
+    let finalGroupRoles = groupRolesFilter.map((item) => {
+      let data = { groupID: +selectGroup, roleID: +item.id };
+      return data;
+    });
+    rs.groupId = selectGroup;
+    rs.groupRoles = finalGroupRoles;
+    return rs;
+  };
+
+  const handleSave = async () => {
+    let data = buildDataToSave();
+    let res = await assignRoleToGroup(data);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+    } else {
+      toast.error(res.EM);
+    }
+  };
+
   return (
     <div className=" group-role-container">
       <div className="container">
@@ -150,7 +182,14 @@ const GroupRole = () => {
                     );
                   })}
                 <div className="mt-3">
-                  <button className="btn btn-warning">Save</button>
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => {
+                      handleSave();
+                    }}
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             )}

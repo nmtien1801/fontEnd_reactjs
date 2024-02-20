@@ -30,7 +30,11 @@ const NavHeader = () => {
     }
   };
 
-  if ((user && user.isAuthenticated === true) || location.pathname === "/") {
+  if (
+    (user && user.isAuthenticated === true) ||
+    location.pathname === "/about" ||
+    location.pathname === "/"
+  ) {
     return (
       <>
         {/* <div className="topnav">
@@ -49,9 +53,9 @@ const NavHeader = () => {
             <Container>
               <Navbar.Brand href="#home">
                 <img
-                  alt=""
+                  alt="React Logo" // không load được logo sẽ hiện
                   src={logo}
-                  width="30"
+                  width="50"
                   height="30"
                   className="d-inline-block align-top"
                 />

@@ -10,6 +10,10 @@
       font-size: 30px;
     }
 
+    a {
+      text-decoration: none;
+    }
+
     .detail {
       font-size: 30px;
     }
@@ -34,6 +38,15 @@
         &:hover {
           text-decoration: underline;
         }
+      }
+    }
+
+    .return {
+      a {
+        text-decoration: none;
+      }
+      span {
+        padding-left: 7px;
       }
     }
 

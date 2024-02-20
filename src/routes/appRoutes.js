@@ -2,7 +2,7 @@ import { Route, Switch } from "react-router-dom";
 
 import Detail from "../view/Detail";
 import MyComponent from "../view/myComponent";
-import Home from "../view/Home";
+import HomeJWT from "../view/homeJWT";
 import Login from "../components/Login/login";
 import Register from "../components/register/register";
 import Users from "../components/manageUsers/users";
@@ -19,13 +19,14 @@ const AppRoutes = (props) => {
         <Route exact path="/">
           {/* this is  use redux */}
           {/* <Home /> */}
-          Home
+          <HomeJWT />
         </Route>
 
-        {/* <Route path="/about">
-          <MyComponent />
-        </Route> */}
-        <PrivateRoutes path="/about" component={MyComponent} />
+        {/* để không check authentication - bị đẩy ra login */}
+        <Route path="/about">
+          <MyComponent />   
+        </Route>
+        {/* <PrivateRoutes path="/about" component={MyComponent} /> */}
         <PrivateRoutes path="/project" component={Project} />
         <PrivateRoutes path="/roles" component={Role} />
         <PrivateRoutes path="/group-roles" component={GroupRole} />

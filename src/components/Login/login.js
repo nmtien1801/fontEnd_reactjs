@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./login.scss";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LoginUser } from "../../services/userService";
 import { UserContext } from "../../context/userContext";
+
 const Login = () => {
-  const { loginContext } = useContext(UserContext);
+  const { user, loginContext } = useContext(UserContext);
 
   const [valueLogin, setValueLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -65,12 +66,23 @@ const Login = () => {
       handleLogin();
     }
   };
+
+  useEffect(() => {
+    if (user && user.isAuthenticated) {
+      history.push("/"); // khi login rồi không vô đc trang login nữa
+    }
+  }, []);
+
   return (
     <div className="login-container">
       <div className="container">
         <div className="row px-3 px-ms-0">
           <div className="content-left col-12 d-none col-sm-7 d-sm-block">
-            <div className="brand">This is logo</div>
+            <div className="brand">
+              <Link to="/">
+                <span>this is logo</span>
+              </Link>
+            </div>
             <div className="detail">This is detail</div>
           </div>
           <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3 my-3 ">
@@ -124,6 +136,12 @@ const Login = () => {
               >
                 Create New Acount
               </button>
+              <div className="mt-3 return">
+                <Link to="/">
+                  <i className="fa fa-arrow-circle-left "></i>
+                  <span title="return to home page">Return To HomePage</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

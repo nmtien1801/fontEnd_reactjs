@@ -10,6 +10,10 @@
       font-size: 30px;
     }
 
+    a {
+      text-decoration: none;
+    }
+
     .detail {
       font-size: 30px;
     }
@@ -39,6 +43,19 @@
 
     .btn-createAccount {
       text-align: center;
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    .return {
+      a {
+        text-decoration: none;
+      }
+      span {
+        padding-left: 7px;
+      }
     }
   }
 }

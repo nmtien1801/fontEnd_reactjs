@@ -11,13 +11,21 @@ import { MutatingDots } from "react-loader-spinner";
 import NavHeader from "../components/Navigation/nav";
 import AppRoutes from "../routes/appRoutes";
 import { UserContext } from "../context/userContext";
+import { Scrollbars } from "react-custom-scrollbars";
 
-function App() {
+const App = () => {
   const [account, setAccount] = useState({});
   const { user } = useContext(UserContext);
+  // tự code - 12.8 jwt
+  const [scrollHeight, setScrollHeight] = useState(0);
 
+  useEffect(() => {
+    let windowHeight = window.innerHeight;
+    setScrollHeight(windowHeight);
+  }, [user]);
+  //
   return (
-    <>
+    <Scrollbars autoHide style={{ height: scrollHeight }}>
       <BrowserRouter>
         {user && user.isLoading ? (
           <div className="loading-container">
@@ -48,7 +56,7 @@ function App() {
       </BrowserRouter>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -58,8 +66,8 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </>
+    </Scrollbars>
   );
-}
+};
 
 export default App;

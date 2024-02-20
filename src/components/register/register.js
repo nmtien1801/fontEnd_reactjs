@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./register.scss";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { registerNewUser } from "../../services/userService";
+import { UserContext } from "../../context/userContext";
 
 const Register = (props) => {
+  const { user } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [userName, setUserName] = useState("");
@@ -23,10 +26,12 @@ const Register = (props) => {
   const handleLogin = () => {
     history.push("/login");
   };
+
+  // đẩy ra khi đã có người dùng này
   useEffect(() => {
-    // axios.get("http://localhost:8080/api/v1/test-api").then((data) => {
-    //   console.log("check data: ", data);
-    // });
+    if (user && user.isAuthenticated) {
+      history.push("/");
+    }
   }, []);
 
   const isValidInput = () => {
@@ -77,7 +82,8 @@ const Register = (props) => {
         history.push("/login");
       } else {
         toast.error(serviceData.EM);
-        if (serviceData.DT === "email") { // bôi đỏ lại input bị sai
+        if (serviceData.DT === "email") {
+          // bôi đỏ lại input bị sai
           setObjCheckInput({ ...defaulValidInput, isValidEmail: false });
         }
       }
@@ -96,7 +102,11 @@ const Register = (props) => {
       <div className="container">
         <div className="row px-3 px-ms-0">
           <div className="content-left col-12 d-none col-sm-7 d-sm-block">
-            <div className="brand">This is logo</div>
+            <div className="brand">
+              <Link to="/">
+                <span title="Return to homePage">this is logo</span>
+              </Link>
+            </div>
             <div className="detail">This is detail</div>
           </div>
           <div className="content-right col-12 col-sm-5 d-flex flex-column gap-3 py-3 my-3 ">
@@ -187,6 +197,12 @@ const Register = (props) => {
               <button className="btn btn-success" onClick={() => handleLogin()}>
                 Already've an account. Login
               </button>
+              <div className="mt-3 return">
+                <Link to="/">
+                  <i className="fa fa-arrow-circle-left "></i>
+                  <span title="return to home page">Return To HomePage</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

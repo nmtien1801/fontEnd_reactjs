@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 
 // Set config defaults when creating the instance
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  // baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_BACKEND_URL,
   withCredentials: true, // để FE có thể nhận cookie từ BE
 });
 
@@ -41,9 +42,17 @@ instance.interceptors.response.use(
     switch (status) {
       // authentication (token related issues)
       case 401: {
-        console.log(">>>check error 401: ", error.response.data); // SEARCH: axios get error body
-        toast.error("Unauthorized the user. please login ... ");
-        // window.location.href("/login");
+        // check quyền từ context chuyển qua
+        if (
+          window.location.pathname !== "/" &&
+          window.location.pathname !== "/login" &&
+          window.location.pathname !== "/register"
+        ) {
+          console.log(">>>check error 401: ", error.response.data); // SEARCH: axios get error body
+          toast.error("Unauthorized the user. please login ... ");
+          // window.location.href("/login");
+        }
+
         return error.response.data; //getUserAccount response data(BE) nhưng bị chặn bên res(FE) dù đúng hay sai khi fetch account
       }
 

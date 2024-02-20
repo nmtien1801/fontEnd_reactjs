@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getUserAccount } from "../services/userService";
 
+// search : Learn to UseContext() with Hooks in 3 Minutes
+
 const UserContext = React.createContext(null);
 
 const UserProvider = ({ children }) => {
@@ -47,14 +49,16 @@ const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (
-      window.location.pathname !== "/" &&
-      window.location.pathname !== "/login"
-    ) {
-      fetchUser();
-    } else {
-      setUser({ ...user, isLoading: false }); // copy userDefault sẽ bị mất người dùng
-    }
+    // if (
+    //   window.location.pathname !== "/" &&
+    //   window.location.pathname !== "/login" &&
+    //   window.location.pathname !== "/register"
+    // ) {
+    //   fetchUser();
+    // } else {
+    //   setUser({ ...user, isLoading: false }); // copy userDefault sẽ bị mất người dùng
+    // }
+    fetchUser();  // khi đứng tại đó nếu có (user) login rồi nhưng refesh context không fetch -> gán vô axios
   }, []);
 
   return (

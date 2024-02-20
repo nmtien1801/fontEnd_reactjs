@@ -24,6 +24,13 @@ body {
 }
 
 .nav-header {
+  //ghi đè lên boostrap để có thanh gạch dưới nav
+  padding-bottom: 0.5rem;
+
+  .navbar {
+    padding-bottom: 0 !important;
+  }
+
   .bg-header {
     background-color: #212529;
   }
@@ -33,12 +40,19 @@ body {
     &:hover {
       color: #61dafb !important;
     }
+
+    // &.active {
+    //   color: #61dafb !important;
+    //   border-bottom: 2px solid;  // cách 1
+    // }
   }
 
   .active {
     // active dùng đề in đậm phần tử đã chọn
     color: #61dafb !important;
+    border-bottom: 2px solid;
   }
+
   .dropdown-menu {
     a {
       color: #212529 !important;
